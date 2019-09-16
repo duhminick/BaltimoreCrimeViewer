@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  client:
+    build: ./client
+    command: nodemon -L --exec npm start
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
