@@ -7,8 +7,9 @@ RUN npm install -g nodemon
 
 # Install packages
 COPY package.json /app/package.json
-RUN npm install
+COPY yarn.lock /app/yarn.lock
+RUN yarn install
 
 # Add in the rest of the files
 COPY . /app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

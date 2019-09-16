@@ -3,7 +3,7 @@ version: '3'
 services:
   client:
     build: ./client
-    command: nodemon -L --exec npm start
+    command: nodemon -L --exec yarn start
     ports: 
       - "3000:3000"
     volumes:
