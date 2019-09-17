@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { Card, H5, MenuItem } from '@blueprintjs/core';
+import { MultiSelect } from '@blueprintjs/select';
+import './heatmap.css'
 
 class Heatmap extends Component {
   static defaultProps = {
@@ -12,14 +15,48 @@ class Heatmap extends Component {
     height: '100%'
   };
 
+  constructor(props) {
+    super(props);
+    // this.state = {items: ['a', 'b', 'c']};
+  }
+
+  // itemRenderer(item, { modifiers, handleClick }) {
+  //   if (!modifiers.matchesPredicate) {
+  //     return null;
+  //   }
+
+  //   return (
+  //     <MenuItem
+  //       active={modifiers.active}
+  //       text={item}
+  //       onClick={handleClick} />
+  //   );
+  // }
+
+  // tagRenderer(item) {
+  //   return item;
+  // }
+
   render() {
     return (
-      <div style={{height: '900px', width: '1400px'}}>
-        <h1>Google Map</h1>
-        <GoogleMapReact
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom} 
-          style={this.mapStyle} />
+      <div className="container">
+        <div className="controls">
+          <Card elevation={1}>
+            <H5>Options</H5>
+            {/* <MultiSelect
+              itemRenderer={this.itemRenderer}
+              items={this.state.items}
+              onItemSelect={console.log('clicked')}
+              tagRenderer={this.tagRenderer} /> */}
+          </Card>
+        </div>
+
+        <div className="map">
+          <GoogleMapReact
+            defaultCenter={this.props.center}
+            defaultZoom={this.props.zoom}
+            style={this.mapStyle} />
+        </div>
       </div>
     )
   }

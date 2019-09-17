@@ -1,0 +1,24 @@
+@media only screen and (max-width: 900px) {
+  .map {
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .map {
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.map {
+  height: 80vh;
+  flex: 1;
+}
+
+.controls {
+  flex: 1;
+  margin: 15px;
+}
