@@ -9,3 +9,12 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+
+  database:
+    image: cassandra:3
+    command: sh /cassandra-init.sh
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./database/data:/var/lib/cassandra
+      - ./database/cassandra-init.sh:/cassandra-init.sh
