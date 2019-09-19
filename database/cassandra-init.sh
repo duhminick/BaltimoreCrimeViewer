@@ -1,6 +1,7 @@
 cat >/init.cql << EOF
 CREATE KEYSPACE IF NOT EXISTS bcv WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
-CREATE TABLE IF NOT EXISTS crime(
+USE bcv;
+CREATE TABLE IF NOT EXISTS crimes(
     id int,
     crimedate date,
     crimehour int,
@@ -21,7 +22,9 @@ CREATE TABLE IF NOT EXISTS crime(
 );
 EOF
 
-until cqlsh -f /init.cql do
+until cqlsh -f /init.cql; do
     echo "cqlsh: cassandra is not yet available - retrying"
     sleep 2
 done &
+
+exec /docker-entrypoint.sh "$@"
