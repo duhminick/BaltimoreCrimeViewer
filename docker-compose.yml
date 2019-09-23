@@ -18,6 +18,13 @@ services:
       - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       # - ./database/data:/var/lib/postgresql/data
 
+  cache:
+    image: redis:5.0.5-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./cache/redis.conf:/usr/local/etc/redis/redis.conf
+
   retriever:
     build: ./retriever
     command: python3 app.py
@@ -25,5 +32,5 @@ services:
       - "4000:4000"
     volumes:
       - ./retriever:/app
-    depends_on:
-      - database
+    # depends_on:
+    #   - database
