@@ -11,10 +11,19 @@ services:
       - /app/node_modules
 
   database:
-    image: cassandra:3
-    command: sh /cassandra-init.sh
+    image: postgres:12-alpine
     ports:
-      - "7000:7000"
+      - "5432:5432"
     volumes:
-      - ./database/data:/var/lib/cassandra
-      - ./database/cassandra-init.sh:/cassandra-init.sh
+      - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      # - ./database/data:/var/lib/postgresql/data
+
+  retriever:
+    build: ./retriever
+    command: python3 app.py
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./retriever:/app
+    depends_on:
+      - database
