@@ -32,5 +32,17 @@ services:
       - "4000:4000"
     volumes:
       - ./retriever:/app
-    # depends_on:
-    #   - database
+    depends_on:
+      - database
+      - cache
+
+  mbls:
+    build: ./mbls
+    command: python3 app.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mbls:/app
+    depends_on:
+      - database
+      - cache

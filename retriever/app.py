@@ -38,12 +38,14 @@ def job():
   for result in results:
     if 'latitude' in result and 'longitude' in result:
       converted_to_string = json.dumps(result)
+
       if not redis.exists(converted_to_string):
         cur.execute('INSERT INTO crimes (longitude, latitude) VALUES (%s, %s)', (result['longitude'], result['latitude']))
         redis.set(converted_to_string, 'true')
         print('Inserted:', result['longitude'], result['latitude'])
       else:
         print('Already exists:', result['longitude'], result['latitude'])
+
   db.commit()
 
   threading.Timer(PERIOD, job).start()
