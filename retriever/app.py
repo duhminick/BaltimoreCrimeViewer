@@ -16,6 +16,8 @@ CACHE_DB = 0
 
 PERIOD = 60 * 60 # Run every hour
 
+fetch_limit = 10000
+
 # Connect to database
 db = psycopg2.connect(
   host=DATABASE_HOST,
@@ -34,7 +36,12 @@ with open('init.sql', 'r') as f:
 soc = Socrata(DATASET_PROVIDER, None)
 
 def job():
-  results = soc.get(DATASET_IDENTIFIER, limit=5)
+  # Stats
+  inserted = 0
+  already_existing = 0
+
+  global fetch_limit
+  results = soc.get(DATASET_IDENTIFIER, limit=fetch_limit)
   for result in results:
     if 'latitude' in result and 'longitude' in result:
       converted_to_string = json.dumps(result)
@@ -42,12 +49,16 @@ def job():
       if not redis.exists(converted_to_string):
         cur.execute('INSERT INTO crimes (longitude, latitude) VALUES (%s, %s)', (result['longitude'], result['latitude']))
         redis.set(converted_to_string, 'true')
-        print('Inserted:', result['longitude'], result['latitude'])
+        inserted += 1
+        # print('Inserted:', result['longitude'], result['latitude'])
       else:
-        print('Already exists:', result['longitude'], result['latitude'])
+        already_existing += 1
+        # print('Already exists:', result['longitude'], result['latitude'])
 
   db.commit()
+  print('[RETRIEVER] Inserted:', inserted, '; Already existing:', already_existing)
 
+  fetch_limit = 2000
   threading.Timer(PERIOD, job).start()
 
 job()

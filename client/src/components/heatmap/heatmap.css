@@ -14,11 +14,6 @@
 }
 
 .map {
-  height: 80vh;
+  height: 100vh;
   flex: 1;
-}
-
-.controls {
-  flex: 1;
-  margin: 15px;
 }
