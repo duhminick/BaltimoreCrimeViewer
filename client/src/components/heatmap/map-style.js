@@ -2,7 +2,7 @@
 
 const MAX_ZOOM_LEVEL = 20;
 
-export const heatmapLayer = {
+const heatmapLayer = {
   maxzoom: MAX_ZOOM_LEVEL,
   type: 'heatmap',
   paint: {
@@ -24,6 +24,29 @@ export const heatmapLayer = {
       'rgb(255,201,101)'
     ],
     'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 2, MAX_ZOOM_LEVEL, 20],
-    'heatmap-opacity': 0.4
+    'heatmap-opacity': {
+      default: 0.4,
+      stops: [
+        [16, 0.4],
+        [17, 0]
+      ]
+    }
   }
 };
+
+const circleLayer = {
+  type: 'circle',
+  paint: {
+    'circle-radius': 8,
+    'circle-color': 'red',
+    'circle-opacity': {
+      default: 1,
+      stops: [
+        [16, 0],
+        [17, 1]
+      ]
+    }
+  }
+};
+
+export { heatmapLayer, circleLayer };

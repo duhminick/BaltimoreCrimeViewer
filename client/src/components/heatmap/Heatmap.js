@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapGL, { Source, Layer } from 'react-map-gl';
-import { heatmapLayer } from './map-style';
+import MapGL, { Source, Layer, Marker, Popup } from 'react-map-gl';
+import { heatmapLayer, circleLayer } from './map-style';
 import './heatmap.css'
 
 const MAP_TOKEN = '';
@@ -9,6 +9,8 @@ const MAP_TOKEN = '';
 class Heatmap extends Component {
   constructor(props) {
     super(props);
+
+    this._ref = null;
 
     this.state = {
       viewport: {
@@ -18,7 +20,7 @@ class Heatmap extends Component {
 
         zoom: 13,
         bearing: 0,
-        pitch: 0
+        pitch: 0,
       },
       coordinates: null
     };
@@ -50,6 +52,10 @@ class Heatmap extends Component {
 
   _onViewportChange = viewport => this.setState({viewport});
 
+  _onClick = e => {
+    // <Popup longitude={} latitude={} />
+  };
+
   render() {
     const { viewport, coordinates } = this.state;
 
@@ -57,14 +63,19 @@ class Heatmap extends Component {
       <div className="map">
         <MapGL
           {...viewport}
+          ref={this._ref}
           width="100%"
           height="100%"
           mapStyle="mapbox://styles/mapbox/dark-v10"
           onViewportChange={this._onViewportChange}
+          minZoom={11}
+          maxZoom={18}
+          onClick={this._onClick}
           mapboxApiAccessToken={MAP_TOKEN}>
             {coordinates && (
               <Source type="geojson" data={coordinates}>
                 <Layer {...heatmapLayer} />
+                <Layer {...circleLayer} />
               </Source>
             )}
         </MapGL>
