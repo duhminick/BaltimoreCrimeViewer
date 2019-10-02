@@ -24,11 +24,17 @@ class TotalIncidents(Normalization):
         if 'total_incidents' in data:
             del data['total_incidents']
 
+class VRIName(Normalization):
+    def normalize(self, data):
+        if 'vri_name1' in data:
+            del data['vri_name1']
+
 def normalize(data):
     tasks = []
     tasks.append(InsideOutside())
     tasks.append(CrimeTime())
     tasks.append(TotalIncidents())
+    tasks.append(VRIName())
 
     for task in tasks:
         task.normalize(data)
