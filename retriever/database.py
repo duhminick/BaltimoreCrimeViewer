@@ -1,6 +1,7 @@
 from psycopg2.extensions import AsIs
 import config
 import psycopg2
+import normalization
 
 class DatabaseInstance:
   _instance = None
@@ -19,3 +20,13 @@ def get_instance():
 def insert(data):
   db = get_instance()
   cur = db.cursor()
+
+  data = normalization.normalize(data)
+
+  columns = data.keys()
+  values = [data[col] for col in columns]
+
+  stmt = 'INSERT INTO crimes (%s) VALUES %s'
+
+  cur.execute(stmt, (AsIs(','.join(columns)), tuple(values)))
+  print(cur.mogrify(stmt, (AsIs(','.join(columns)), tuple(values))))
