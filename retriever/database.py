@@ -29,4 +29,4 @@ def insert(data):
   stmt = 'INSERT INTO crimes (%s) VALUES %s'
 
   cur.execute(stmt, (AsIs(','.join(columns)), tuple(values)))
-  print(cur.mogrify(stmt, (AsIs(','.join(columns)), tuple(values))))
+  # print(cur.mogrify(stmt, (AsIs(','.join(columns)), tuple(values))))
