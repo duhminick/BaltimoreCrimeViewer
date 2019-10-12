@@ -9,6 +9,23 @@ api = Api(app)
 
 db = database.get_instance()
 
+class Count(Resource):
+  def get(self, attribute):
+    cur = db.cursor()
+
+    if attribute == 'weapon': 
+      cur.execute('SELECT weapon, COUNT(*) FROM crimes GROUP BY weapon;')
+    elif attribute == 'neighorhood':
+      cur.execute('SELECT neighborhood, COUNT(*) FROM crimes GROUP BY neighborhood;')
+
+    results = []
+    for row in cur.fetchall():
+      results.append({'attribute':row[0], 'count':row[1]})
+
+    return {'count': results}
+
+api.add_resource(Count, '/count/<string:attribute>')
+
 class Coordinates(Resource):
   def get(self):
     cur = db.cursor()
