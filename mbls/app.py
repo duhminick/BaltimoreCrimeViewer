@@ -12,11 +12,11 @@ db = database.get_instance()
 
 class Count(Resource):
   def get(self, attribute):
-    if attribute not in ['weapon', 'neighborhood']:
+    if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside']:
       return {'error': 'Invalid attribute'}
 
     cur = db.cursor()
-    stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL GROUP BY %s'
+    stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL GROUP BY %s ORDER BY COUNT(*) DESC'
     cur.execute(stmt, (AsIs(attribute), AsIs(attribute), AsIs(attribute)))
 
     results = []
