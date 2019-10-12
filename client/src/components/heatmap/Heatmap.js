@@ -4,7 +4,7 @@ import MapGL, { Source, Layer, Marker, Popup } from 'react-map-gl';
 import { heatmapLayer, circleLayer } from './map-style';
 import './heatmap.css'
 
-const MAP_TOKEN = '';
+const MAP_TOKEN = 'pk.eyJ1IjoicmFzaGJhbGFzaCIsImEiOiJjazE2b3Z1engwNXB6M25rdzhsaGthczc2In0.MQXvx9LrRR6zaP1yLrQGFQ';
 
 class Heatmap extends Component {
   constructor(props) {
