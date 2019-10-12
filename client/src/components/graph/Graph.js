@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   XYPlot,
   XAxis,
@@ -8,25 +8,47 @@ import {
   HorizontalBarSeries,
   HorizontalBarSeriesCanvas
 } from 'react-vis';
+import './Graph.css';
 
-class Graph extends React.Component {
-  state = {
-    useCanvas: false
-  };
+class Graph extends Component {
+    constructor(props) {
+
+        super(props)
+
+        this.state = {
+            useCanvas: false,
+            countArr: null
+          };
+    }
+  
+
+  componentDidMount() {
+    fetch('http://localhost:5000/count/weapon')
+      .then(response => response.json())
+      .then(data => {
+          let c = data.count.map((attr) => {
+              return {
+                y: attr.attribute, x: attr.count
+              }
+          })
+          this.setState({ countArr: c })
+          console.log(this.state.countArr)
+      });
+  }
+
   render() {
-    const {useCanvas} = this.state;
+    const {useCanvas, countArr} = this.state;
     const BarSeries = useCanvas
       ? HorizontalBarSeriesCanvas
       : HorizontalBarSeries;
     return (
       <div>
-        <XYPlot width={300} height={300} stackBy="x">
+        <XYPlot yType="ordinal" width={800} height={700}>
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
-          <YAxis />
-          <BarSeries data={[{y: 2, x: 10}, {y: 4, x: 5}, {y: 5, x: 15}]} />
-          <BarSeries data={[{y: 2, x: 12}, {y: 4, x: 2}, {y: 5, x: 11}]} />
+          <XAxis title="Number of Crimes Commited"/>
+          <YAxis title="Weapon Used"/>
+          <BarSeries data={countArr} />
         </XYPlot>
       </div>
     );
