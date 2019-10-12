@@ -15,7 +15,7 @@ import './index.css';
 
 let Home = () => (
   <div>
-    <Graph attribute="weapon" xAxisTitle="Count" yAxisTitle="Type of Weapon" />
+    <Graph attribute="weapon" yAxisTitle="Count" width={700} height={400} />
   </div>
 );
 
