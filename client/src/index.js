@@ -4,6 +4,7 @@ import { Router } from '@reach/router';
 import { NavigationBar,
   WrappedLink } from './components/navigation';
 import { Heatmap } from './components/heatmap';
+import Graph from './components/graph/Graph';
 import './index.css';
 
 // import * as serviceWorker from './serviceWorker';
@@ -14,7 +15,7 @@ import './index.css';
 
 let Home = () => (
   <div>
-    Hello
+    <Graph />
   </div>
 );
 
