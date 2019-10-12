@@ -32,7 +32,6 @@ class Graph extends Component {
               }
           })
           this.setState({ countArr: c })
-          console.log(this.state.countArr)
       });
   }
 
@@ -43,12 +42,12 @@ class Graph extends Component {
       : HorizontalBarSeries;
     return (
       <div>
-        <XYPlot yType="ordinal" width={800} height={700}>
+        <XYPlot className="weaponGraph" yType="ordinal" width={1000} height={700}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis title="Number of Crimes Commited"/>
           <YAxis title="Weapon Used"/>
-          <BarSeries data={countArr} />
+          <BarSeries data={countArr} barWidth={.3} />
         </XYPlot>
       </div>
     );
