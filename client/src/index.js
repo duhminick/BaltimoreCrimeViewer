@@ -13,10 +13,16 @@ import './index.css';
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();
 
+const graphWidth = 800;
+const graphHeight = 400;
+
 let Home = () => (
-  <div>
-    <Graph attribute="weapon" yAxisTitle="Count" width={700} height={400} />
-    <Graph attribute="district" yAxisTitle="Count" width={800} height={400} />
+  <div className="graphs">
+    <Graph title="Weapon" attribute="weapon" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="Neighborhood" attribute="neighborhood" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="District" attribute="district" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="Inside (vs. Outside)" attribute="inside" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="Premise" attribute="premise" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
   </div>
 );
 

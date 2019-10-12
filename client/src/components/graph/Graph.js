@@ -38,12 +38,13 @@ class Graph extends Component {
 
     return (
       <div>
+        <h2>{this.props.title ? this.props.title : ''}</h2>
         <XYPlot className="graph" xType="ordinal" width={this.props.width} height={this.props.height}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis title={this.props.xAxisTitle ? this.props.xAxisTyle : ''} />
           <YAxis title={this.props.yAxisTitle ? this.props.yAxisTitle : ''} />
-          <VerticalBarSeries data={count} />
+          <VerticalBarSeries data={count} barWidth={0.4} />
         </XYPlot>
       </div>
     );
