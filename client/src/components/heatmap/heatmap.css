@@ -1,7 +1,3 @@
-html {
-  overflow: hidden;
-}
-
 @media only screen and (max-width: 900px) {
   .map {
   }
@@ -18,6 +14,6 @@ html {
 }
 
 .map {
-  height: 97vh;
+  height: 96.15vh;
   flex: 1;
 }
