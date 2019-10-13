@@ -6,7 +6,8 @@ import {
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  VerticalBarSeries
+  VerticalBarSeries,
+  HorizontalBarSeries
 } from 'react-vis';
 import './Graph.css';
 
@@ -24,11 +25,18 @@ class Graph extends Component {
       .then(response => response.json())
       .then(data => {
         let c = data.count.map((attr) => {
-          return {
-            x: attr.attribute, y: attr.count
+          if (this.props.horizontal) {
+            return {
+              y: attr.attribute, x: attr.count
+            };
+          } else {
+            return {
+              x: attr.attribute, y: attr.count
+            };
           }
         })
 
+        console.log(c);
         this.setState({ count: c })
       });
   }
@@ -36,15 +44,27 @@ class Graph extends Component {
   render() {
     const { count } = this.state;
 
+    const BarSeries = this.props.horizontal
+      ? HorizontalBarSeries
+      : VerticalBarSeries;
+
+    const xyPlotProps = {
+      className: 'graph',
+      xType: this.props.horizontal ? 'linear' : 'ordinal',
+      yType: this.props.horizontal ? 'ordinal' : 'linear',
+      width: this.props.width,
+      height: this.props.height
+    };
+
     return (
       <div>
         <h2>{this.props.title ? this.props.title : ''}</h2>
-        <XYPlot className="graph" xType="ordinal" width={this.props.width} height={this.props.height}>
+        <XYPlot {...xyPlotProps}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis title={this.props.xAxisTitle ? this.props.xAxisTyle : ''} />
           <YAxis title={this.props.yAxisTitle ? this.props.yAxisTitle : ''} />
-          <VerticalBarSeries data={count} barWidth={0.4} />
+          <BarSeries data={count} barWidth={0.4} />
         </XYPlot>
       </div>
     );
