@@ -2,7 +2,7 @@ import abc
 
 class Normalization(abc.ABC):
     @abc.abstractmethod
-    def normalize(self, data, key):
+    def normalize(self, data):
         pass 
 
 class InsideOutside(Normalization):

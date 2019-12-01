@@ -35,13 +35,13 @@ def job():
     # Assure that we have latitude and longitude
     if 'latitude' in result and 'longitude' in result:
       # Convert data into json format, so that it's a string
-      converted_to_string = json.dumps(result)
+      serialized = json.dumps(result)
 
       # Check our cache
-      if not redis.exists(converted_to_string):
+      if not redis.exists(serialized):
         database.insert(result)
 
-        redis.set(converted_to_string, 'true')
+        redis.set(serialized, 'true')
         stat_inserted += 1
       else:
         stat_existing += 1
