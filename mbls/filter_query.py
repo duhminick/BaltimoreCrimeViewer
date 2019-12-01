@@ -7,12 +7,27 @@ class Filter(abc.ABC):
     def valid(self, args):
         pass
 
+    @abc.abstractmethod
     def should(self, args):
         pass
 
     @abc.abstractmethod
     def get_query(self, args):
         pass
+
+'''
+class Template(Filter):
+    def valid(self, args):
+        return
+
+    def should(self, args):
+        return
+
+    def get_query(self, args):
+        if self.valid(args):
+            return
+        return ''
+'''
 
 class TimeFilter(Filter):
     def valid(self, args):
@@ -39,7 +54,62 @@ class WeaponFilter(Filter):
             return 'weapon = \'{}\''.format(args['weapon'])
         return ''
 
-filters = [TimeFilter(), WeaponFilter()]
+class PremiseFilter(Filter):
+    def valid(self, args):
+        return True
+
+    def should(self, args):
+        return 'premise' in args
+
+    def get_query(self, args):
+        if self.valid(args):
+            return "premise = '{}'".format(args['premise'])
+        return ''
+
+class DistrictFilter(Filter):
+    def valid(self, args):
+        return True
+
+    def should(self, args):
+        return 'district' in args
+
+    def get_query(self, args):
+        if self.valid(args):
+            return "district = '{}'".format(args['district'])
+        return ''
+
+class NeighborhoodFilter(Filter):
+    def valid(self, args):
+        return True
+
+    def should(self, args):
+        return 'neighborhood' in args
+
+    def get_query(self, args):
+        if self.valid(args):
+            return "neighborhood = '{}'".format(args['neighborhood'])
+        return ''
+
+class DescriptionFilter(Filter):
+    def valid(self, args):
+        return True
+
+    def should(self, args):
+        return 'description' in args
+
+    def get_query(self, args):
+        if self.valid(args):
+            return "description = '{}'".format(args['description'])
+        return ''
+
+filters = []
+filters.append(TimeFilter())
+filters.append(WeaponFilter())
+filters.append(PremiseFilter())
+filters.append(DistrictFilter())
+filters.append(NeighborhoodFilter())
+filters.append(DescriptionFilter())
+
 def build_query(args):
     result = []
     for f in filters:
