@@ -1,8 +1,10 @@
-from flask import Flask
-from flask_restful import Resource, Api
+from flask import Flask, request
+from flask_restful import Resource, Api, abort
 from flask_cors import CORS
 from psycopg2.extensions import AsIs
+from filter_query import build_query as build_filter_query
 import database
+import sys
 
 app = Flask(__name__)
 CORS(app)
@@ -10,10 +12,13 @@ api = Api(app)
 
 db = database.get_instance()
 
+def valid_attribute(attribute):
+  if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside']:
+    abort(400, error='Invalid attribute')
+
 class Count(Resource):
   def get(self, attribute):
-    if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside']:
-      return {'error': 'Invalid attribute'}
+    valid_attribute(attribute)
 
     cur = db.cursor()
     stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL GROUP BY %s ORDER BY COUNT(*) DESC'
@@ -24,11 +29,30 @@ class Count(Resource):
       results.append({'attribute': row[0], 'count': row[1]})
 
     return {'count': results}
+  
+  def post(self, attribute):
+    valid_attribute(attribute)
+
+    if 'filter' not in request.get_json():
+      abort(400, error='Need filter argument')
+
+    args = request.get_json()['filter']
+    filter_query = build_filter_query(args)
+
+    cur = db.cursor()
+    stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL AND %s GROUP BY %s ORDER BY COUNT(*) DESC'
+    cur.execute(stmt, (AsIs(attribute), AsIs(attribute), AsIs(filter_query), AsIs(attribute)))
+
+    results = []
+    for row in cur.fetchall():
+      results.append({'attribute': row[0], 'count': row[1]})
+
+    return {'count': results}
 
 class Coordinates(Resource):
   def get(self):
     cur = db.cursor()
-    cur.execute('SELECT longitude, latitude FROM crimes;')
+    cur.execute('SELECT longitude, latitude FROM crimes')
 
     results = []
     for row in cur.fetchall():
