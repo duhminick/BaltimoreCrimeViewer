@@ -59,6 +59,23 @@ class Coordinates(Resource):
       results.append({'lng': row[0], 'lat': row[1]})
 
     return {'positions': results}
+  
+  def post(self):
+    if 'filter' not in request.get_json():
+      abort(400, error='Need filter argument')
+
+    args = request.get_json()['filter']
+    filter_query = build_filter_query(args)
+    
+    cur = db.cursor()
+    stmt = 'SELECT longitude, latitude FROM crimes WHERE %s'
+    cur.execute(stmt, (AsIs(filter_query),))
+
+    results = []
+    for row in cur.fetchall():
+      results.append({'lng': row[0], 'lat': row[1]})
+
+    return {'positions': results}
 
 api.add_resource(Coordinates, '/coordinates')
 api.add_resource(Count, '/count/<string:attribute>')
