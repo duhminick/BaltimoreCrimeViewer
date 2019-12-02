@@ -30,17 +30,19 @@ class Template(Filter):
 '''
 
 class TimeFilter(Filter):
-    def valid(self, args):
-        regex = r'[1-9]\d\d\d-\d\d-\d\d'
-        return re.match(regex, args['from']) and re.match(regex, args['to'])
-
     def should(self, args):
         return 'from' in args and 'to' in args
 
+    def valid(self, args):
+        if self.should(args):
+            regex = r'[1-9]\d\d\d-\d\d-\d\d'
+            return re.match(regex, args['from']) and re.match(regex, args['to'])
+        raise Exception
+
     def get_query(self, args):
-        if self.valid(args):
+        if self.should(args) and self.valid(args):
             return 'crimedate between \'{}\' and \'{}\''.format(args['from'], args['to'])
-        return ''
+        raise Exception
 
 class WeaponFilter(Filter):
     def valid(self, args):
