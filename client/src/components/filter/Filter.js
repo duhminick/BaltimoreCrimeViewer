@@ -10,6 +10,7 @@ class Filter extends Component {
       filterableItems: {
         weapons: [],
         neighborhood: [],
+        description: [],
         district: [],
         premise: [],
         inside: [],
@@ -23,12 +24,18 @@ class Filter extends Component {
 
   componentDidMount() {
     // TODO: call REST api to get this information
-    this.setState({
-      filterableItems: {
-        weapons: ['FIREARM', 'KNIFE'],
-        neighborhood: ['PIMLICO', 'MILTON'],
-      },
-    });
+    // this.setState({
+    //   filterableItems: {
+    //     weapons: ['FIREARM', 'KNIFE'],
+    //     neighborhood: ['PIMLICO', 'MILTON'],
+    //   },
+    // });
+
+    fetch('http://localhost:5000/items')
+      .then(response => response.json())
+      .then(data => {
+          this.setState({filterableItems: data});
+      });
   }
 
   render() {
@@ -48,13 +55,14 @@ class Filter extends Component {
           <div className="filters">
             <SelectFilter title="Weapon" items={filterableItems.weapons} filterName="weapon" ref="weapon" />
             <SelectFilter title="Neighborhood" items={filterableItems.neighborhood} filterName="neighborhood" ref="neighborhood" />
+            <SelectFilter title="Description" items={filterableItems.description} filterName="description" ref="description" />
             <SelectFilter title="District" items={filterableItems.district} filterName="district" ref="district" />
             <SelectFilter title="Premise" items={filterableItems.premise} filterName="premise" ref="premise" />
-            <SelectFilter title="Inside/Outside" items={filterableItems.inside} filterName="inside" ref="inside" />
+            {/* <SelectFilter title="Inside/Outside" items={filterableItems.inside} filterName="inside" ref="inside" /> */}
 
             <Button text="Apply Filters" intent="primary" onClick={() => {
-              const { weapon, neighborhood, district, premise, inside } = this.refs;
-              const options = [weapon, neighborhood, district, premise, inside];
+              const { weapon, neighborhood, description, district, premise, inside } = this.refs;
+              const options = [weapon, neighborhood, description, district, premise, inside];
 
               let filter = {};
 

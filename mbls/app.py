@@ -16,6 +16,18 @@ def valid_attribute(attribute):
   if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside']:
     abort(400, error='Invalid attribute')
 
+def get_unique_column_values(column_name):
+  # TODO: store data into redis then check redis first
+  cur = db.cursor()
+  stmt = 'SELECT DISTINCT %s FROM crimes WHERE %s IS NOT NULL ORDER BY %s ASC'
+  cur.execute(stmt, (AsIs(column_name), AsIs(column_name), AsIs(column_name)))
+
+  results = []
+  for row in cur.fetchall():
+    results.append(row[0])
+  
+  return results
+
 class Count(Resource):
   def get(self, attribute):
     valid_attribute(attribute)
@@ -83,8 +95,20 @@ class Coordinates(Resource):
 
     return {'positions': results}
 
+class FilterItems(Resource):
+  def get(self):
+    return {
+      'neighborhood': get_unique_column_values('neighborhood'),
+      'weapons': get_unique_column_values('weapon'),
+      'description': get_unique_column_values('description'),
+      'district': get_unique_column_values('district'),
+      'premise': get_unique_column_values('premise'),
+      'inside': ['true', 'false']
+    }
+
 api.add_resource(Coordinates, '/coordinates')
 api.add_resource(Count, '/count/<string:attribute>')
+api.add_resource(FilterItems, '/items')
 
 if __name__ == '__main__':
   app.run(debug=True, host='0.0.0.0', port=5000)

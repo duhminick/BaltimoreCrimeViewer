@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { MenuItem, Button } from '@blueprintjs/core';
-import { Select } from '@blueprintjs/select';
+import { Select, QueryList } from '@blueprintjs/select';
 import './filter.css';
 
 class SelectFilter extends Component {
@@ -31,7 +31,21 @@ class SelectFilter extends Component {
           onItemSelect={(item) => {
             this.setState({selectedItem: item});
           }}
+          itemPredicate={(query, item, _index, exactMatch) => {
+            const normalizedValue = item.toLowerCase();
+            const normalizedQuery = query.toLowerCase();
+
+            if (exactMatch) {
+              return normalizedQuery == normalizedValue;
+            } else {
+              return normalizedValue.indexOf(normalizedQuery) >= 0;
+            }
+          }}
           itemRenderer={(item, { modifiers, handleClick }) => {
+            if (!modifiers.matchesPredicate) {
+              return null;
+            }
+
             return (
               <MenuItem 
                 key={item}

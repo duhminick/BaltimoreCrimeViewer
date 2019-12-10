@@ -46,7 +46,7 @@ class TimeFilter(Filter):
 
 class WeaponFilter(Filter):
     def valid(self, args):
-        return args['weapon'] in ['FIREARM', 'OTHER', 'KNIFE', 'HANDS', 'FIRE']
+        return args['weapon'] in ['FIREARM', 'OTHER', 'KNIFE', 'HANDS', 'FIRE', 'NA', 'OTHER']
 
     def should(self, args):
         return 'weapon' in args
