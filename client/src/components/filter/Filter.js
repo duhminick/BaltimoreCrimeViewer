@@ -14,6 +14,7 @@ class Filter extends Component {
         premise: [],
         inside: [],
       },
+      // TODO: find a more elegant solution than this
       filter: {
         filter: {}
       },

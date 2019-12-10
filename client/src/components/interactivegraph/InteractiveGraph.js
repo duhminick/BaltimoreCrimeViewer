@@ -24,9 +24,7 @@ class InteractiveGraph extends Component {
   }
 
   componentDidUpdate(previousProps) {
-    const b = this.props.filter ? JSON.stringify(this.props.filter) : JSON.stringify({filter: {}});
-    console.log(b);
-
+    // This is to prevent constant hammering on the API
     if (previousProps.filter == this.props.filter && this.state.count != null) {
       return;
     }

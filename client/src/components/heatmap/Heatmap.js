@@ -26,9 +26,20 @@ class Heatmap extends Component {
     };
   }
 
-  componentDidMount() {
-    fetch('http://localhost:5000/coordinates')
-      .then(response => response.json())
+  componentDidUpdate(previousProps) {
+    // This is to prevent constant hammering on the API
+    if (previousProps.filter == this.props.filter && this.state.coordinates != null) {
+      return;
+    }
+
+    fetch('http://localhost:5000/coordinates', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: this.props.filter ? JSON.stringify(this.props.filter) : JSON.stringify({filter: {}}),
+    }).then(response => response.json())
       .then(data => {
         let d = {
           type: 'FeatureCollection',
