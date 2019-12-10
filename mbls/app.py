@@ -37,10 +37,13 @@ class Count(Resource):
       abort(400, error='Need filter argument')
 
     args = request.get_json()['filter']
-    filter_query = build_filter_query(args)
+    if len(args) > 0:
+      filter_query = 'AND ' + build_filter_query(args)
+    else:
+      filter_query = ''
 
     cur = db.cursor()
-    stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL AND %s GROUP BY %s ORDER BY COUNT(*) DESC'
+    stmt = 'SELECT %s, COUNT(*) FROM crimes WHERE %s IS NOT NULL %s GROUP BY %s ORDER BY COUNT(*) DESC'
     cur.execute(stmt, (AsIs(attribute), AsIs(attribute), AsIs(filter_query), AsIs(attribute)))
 
     results = []
@@ -65,10 +68,13 @@ class Coordinates(Resource):
       abort(400, error='Need filter argument')
 
     args = request.get_json()['filter']
-    filter_query = build_filter_query(args)
+    if len(args) > 0:
+      filter_query = 'WHERE ' + build_filter_query(args)
+    else:
+      filter_query = ''
     
     cur = db.cursor()
-    stmt = 'SELECT longitude, latitude FROM crimes WHERE %s'
+    stmt = 'SELECT longitude, latitude FROM crimes %s'
     cur.execute(stmt, (AsIs(filter_query),))
 
     results = []

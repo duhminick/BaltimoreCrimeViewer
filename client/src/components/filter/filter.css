@@ -1,0 +1,19 @@
+#filter-header {
+    margin: 5px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+}
+
+.select-filter {
+    margin-right: 2px;
+    padding-right: 10px;
+}
+
+.select-filter-title {
+    margin-right: 4px;
+    font-weight: 500;
+}

@@ -3,8 +3,9 @@ import { render } from 'react-dom';
 import { Router } from '@reach/router';
 import { NavigationBar,
   WrappedLink } from './components/navigation';
-import { Heatmap } from './components/heatmap';
+import { FilteredHeatmap } from './components/heatmap';
 import { Graph } from './components/graph';
+import { FilteredInteractiveGraph } from './components/interactivegraph';
 import './index.css';
 
 // import * as serviceWorker from './serviceWorker';
@@ -30,12 +31,14 @@ const App = () => (
   <div>
     <NavigationBar name="Baltimore Crime Viewer">
       <WrappedLink to="/" text="Home" icon="home" />
+      <WrappedLink to="graph" text="Interactive Graph" icon="chart" />
       <WrappedLink to="heatmap" text="Heatmap" icon="heatmap" />
     </NavigationBar>
 
     <Router>
       <Home path="/" />
-      <Heatmap path="heatmap" />
+      <FilteredInteractiveGraph path="graph" />
+      <FilteredHeatmap path="heatmap" />
     </Router>
   </div>
 );
