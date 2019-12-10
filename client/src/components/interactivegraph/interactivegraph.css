@@ -1,7 +1,30 @@
 .interactive-graph {
     margin: auto;
+    padding: 5px;
     height: 85vh;
 }
 
+#selector-title {
+    /* font-weight: 500; */
+}
+
 .filtered-interactive-graph {
+}
+
+.graph-selector {
+    margin-left: 5px;
+}
+
+.graph-selector > h2 {
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
+.graph-types {
+    display: flex;
+    flex-direction: row;
+}
+
+.graph-button {
+    margin-right: 10px;
 }

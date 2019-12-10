@@ -25,11 +25,13 @@ class InteractiveGraph extends Component {
 
   componentDidUpdate(previousProps) {
     // This is to prevent constant hammering on the API
-    if (previousProps.filter == this.props.filter && this.state.count != null) {
+    if (previousProps.filter == this.props.filter 
+        && this.state.count != null
+        && previousProps.attribute == this.props.attribute) {
       return;
     }
 
-    fetch('http://localhost:5000/count/weapon', {
+    fetch('http://localhost:5000/count/' + this.props.attribute, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -61,6 +63,7 @@ class InteractiveGraph extends Component {
       className: 'graph',
       xType: this.props.horizontal ? 'linear' : 'ordinal',
       yType: this.props.horizontal ? 'ordinal' : 'linear',
+      margin: {left: 70},
     };
 
     return (
@@ -69,7 +72,7 @@ class InteractiveGraph extends Component {
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
-          <YAxis />
+          <YAxis title="Count" />
           <VerticalBarSeries data={count} barWidth={0.3} />
         </FlexibleXYPlot>
       </div>
