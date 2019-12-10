@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SelectFilter } from './';
+import { SelectFilter, DateFilter } from './';
 import { Button } from '@blueprintjs/core';
 
 class Filter extends Component {
@@ -59,9 +59,10 @@ class Filter extends Component {
             <SelectFilter title="District" items={filterableItems.district} filterName="district" ref="district" />
             <SelectFilter title="Premise" items={filterableItems.premise} filterName="premise" ref="premise" />
             {/* <SelectFilter title="Inside/Outside" items={filterableItems.inside} filterName="inside" ref="inside" /> */}
+            <DateFilter title="Date" ref="date" />
 
             <Button text="Apply Filters" intent="primary" onClick={() => {
-              const { weapon, neighborhood, description, district, premise, inside } = this.refs;
+              const { weapon, neighborhood, description, district, premise, inside, date} = this.refs;
               const options = [weapon, neighborhood, description, district, premise, inside];
 
               let filter = {};
@@ -70,6 +71,11 @@ class Filter extends Component {
                 if (option && option.state.selectedItem != '') {
                   filter[option.props.filterName] = option.state.selectedItem;
                 }
+              }
+
+              if (date.state.from && date.state.to) {
+                filter['from'] = date.state.from;
+                filter['to'] = date.state.to;
               }
 
               this.setState({
