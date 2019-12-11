@@ -8,7 +8,8 @@ import {
   VerticalGridLines,
   HorizontalGridLines,
   VerticalBarSeries,
-  HorizontalBarSeries
+  HorizontalBarSeries,
+  Crosshair
 } from 'react-vis';
 import './interactivegraph.css';
 
@@ -19,7 +20,8 @@ class InteractiveGraph extends Component {
     super(props);
 
     this.state = {
-      count: null
+      count: null,
+      hovering: null
     };
   }
 
@@ -57,7 +59,7 @@ class InteractiveGraph extends Component {
   }
 
   render() {
-    const { count } = this.state;
+    const { count, hover } = this.state;
 
     const xyPlotProps = {
       className: 'graph',
@@ -68,12 +70,21 @@ class InteractiveGraph extends Component {
 
     return (
       <div className="interactive-graph">
-        <FlexibleXYPlot {...xyPlotProps}>
+        <FlexibleXYPlot {...xyPlotProps} onMouseLeave={() => this.setState({hover: null})}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis title="Count" />
-          <VerticalBarSeries data={count} barWidth={0.3} />
+          <VerticalBarSeries
+            data={count}
+            barWidth={0.3}
+            onNearestX={(datapoint) => {
+              this.setState({hover: datapoint})
+            }} />
+
+            {hover &&
+              <Crosshair values={[hover]} />            
+            }
         </FlexibleXYPlot>
       </div>
     );
