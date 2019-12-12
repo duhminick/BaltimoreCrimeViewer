@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api, abort
 from flask_cors import CORS
 from psycopg2.extensions import AsIs
+from psycopg2.extras import RealDictCursor
 from filter_query import build_query as build_filter_query
 import database
 import sys
@@ -106,9 +107,50 @@ class FilterItems(Resource):
       'inside': ['true', 'false']
     }
 
+class AllItems(Resource):
+  def post(self):
+    if 'filter' not in request.get_json():
+      abort(400, error='Need filter argument')
+
+    args = request.get_json()['filter']
+    if len(args) > 0:
+      filter_query = 'WHERE ' + build_filter_query(args)
+    else:
+      filter_query = ''
+    
+    cur = db.cursor()
+    columns = [
+      'id',
+      'longitude',
+      'latitude',
+      'crimehour',
+      'location',
+      'description',
+      'inside',
+      'weapon',
+      'district',
+      'neighborhood',
+      'premise',
+      'crimedate'
+    ]
+    stmt = 'SELECT %s FROM crimes %s'
+    cur.execute(stmt, (AsIs(', '.join(columns)), AsIs(filter_query),))
+
+    results = []
+    for row in cur.fetchall():
+      buffer = list(row)
+      buffer[3] = str(buffer[3])
+      buffer[6] = 'Inside' if buffer[6] else 'Outside'
+      buffer[11] = str(buffer[11])
+      results.append(dict(zip(columns, buffer)))
+
+    return {'info': results}
+
+
 api.add_resource(Coordinates, '/coordinates')
 api.add_resource(Count, '/count/<string:attribute>')
 api.add_resource(FilterItems, '/items')
+api.add_resource(AllItems, '/all')
 
 if __name__ == '__main__':
   app.run(debug=True, host='0.0.0.0', port=5000)

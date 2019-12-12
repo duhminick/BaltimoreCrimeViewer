@@ -5,7 +5,7 @@ import json
 import threading
 import config
 
-fetch_limit = 100000
+fetch_limit = 30000
 
 # Connect to database
 db = database.get_instance()

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router } from '@reach/router';
-import { NavigationBar,
-  WrappedLink } from './components/navigation';
-import { FilteredHeatmap } from './components/heatmap';
+import { NavigationBar, WrappedLink } from './components/navigation';
 import { Graph } from './components/graph';
+import { FilteredHeatmap } from './components/heatmap';
 import { FilteredInteractiveGraph } from './components/interactivegraph';
+import { FilteredTable } from './components/table';
 import './index.css';
 
 // import * as serviceWorker from './serviceWorker';
@@ -32,12 +32,14 @@ const App = () => (
     <NavigationBar name="Baltimore Crime Viewer">
       <WrappedLink to="/" text="Home" icon="home" />
       <WrappedLink to="graph" text="Interactive Graph" icon="chart" />
+      <WrappedLink to="table" text="Table" icon="list" />
       <WrappedLink to="heatmap" text="Heatmap" icon="heatmap" />
     </NavigationBar>
 
     <Router>
       <Home path="/" />
       <FilteredInteractiveGraph path="graph" />
+      <FilteredTable path="table" />
       <FilteredHeatmap path="heatmap" />
     </Router>
   </div>
