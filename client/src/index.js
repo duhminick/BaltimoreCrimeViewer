@@ -31,7 +31,7 @@ const App = () => (
   <div>
     <NavigationBar name="Baltimore Crime Viewer">
       <WrappedLink to="/" text="Home" icon="home" />
-      <WrappedLink to="graph" text="Interactive Graph" icon="chart" />
+      <WrappedLink to="graph" text="Interactive" icon="chart" />
       <WrappedLink to="table" text="Table" icon="list" />
       <WrappedLink to="heatmap" text="Heatmap" icon="heatmap" />
     </NavigationBar>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Filter } from '../filter';
 import { InteractiveGraph } from './';
+import { Heatmap } from '../heatmap';
 import { Button } from '@blueprintjs/core';
 import './interactivegraph.css'
 
@@ -9,17 +10,25 @@ class FilteredInteractiveGraph extends Component {
     super(props);
 
     this.state = {
-      attribute: 'weapon'
+      attribute: 'weapon',
+      showMap: false,
     };
 
     this._update.bind(this);
   }
 
   _update(type) {
-    this.setState({attribute: type});
+    this.setState({
+      attribute: type,
+      showMap: false
+    });
   }
 
   render() {
+    const { showMap } = this.state;
+
+    const DataView = showMap ? Heatmap : InteractiveGraph;
+
     return (
       <div className="filtered-interactive-graph">
         <div className="graph-selector">
@@ -30,11 +39,12 @@ class FilteredInteractiveGraph extends Component {
             <Button className="graph-button" text="Description" onClick={() => this._update('description')} />
             <Button className="graph-button" text="District" onClick={() => this._update('district')} />
             <Button className="graph-button" text="Premise" onClick={() => this._update('premise')} />
+            <Button className="graph-button" text="Heatmap" onClick={() => this.setState({showMap: true})} />
           </div>
 
         </div>
         <Filter>
-          <InteractiveGraph attribute={this.state.attribute} />
+          <DataView attribute={this.state.attribute} />
         </Filter>
       </div>
     );
