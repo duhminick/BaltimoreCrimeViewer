@@ -65,7 +65,7 @@ class InteractiveGraph extends Component {
       className: 'graph',
       xType: this.props.horizontal ? 'linear' : 'ordinal',
       yType: this.props.horizontal ? 'ordinal' : 'linear',
-      margin: {left: 70},
+      margin: {left: 70, bottom: 120, right: 70},
     };
 
     return (
@@ -73,7 +73,7 @@ class InteractiveGraph extends Component {
         <FlexibleXYPlot {...xyPlotProps} onMouseLeave={() => this.setState({hover: null})}>
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
+          <XAxis tickLabelAngle={-45} />
           <YAxis title="Count" />
           <VerticalBarSeries
             data={count}

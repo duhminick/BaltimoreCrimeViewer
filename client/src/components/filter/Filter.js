@@ -22,20 +22,28 @@ class Filter extends Component {
     };
   }
 
-  componentDidMount() {
-    // TODO: call REST api to get this information
-    // this.setState({
-    //   filterableItems: {
-    //     weapons: ['FIREARM', 'KNIFE'],
-    //     neighborhood: ['PIMLICO', 'MILTON'],
-    //   },
-    // });
+  _setDefaultDate() {
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    const today = new Date();
 
+    this.setState({filter: {
+      filter: {
+        from: lastMonth,
+        to: today,
+      }
+    }});
+  }
+
+  componentDidMount() {
     fetch('http://localhost:5000/items')
       .then(response => response.json())
       .then(data => {
           this.setState({filterableItems: data});
       });
+
+    // There appears to be a problem with BlueprintJS?
+    // this._setDefaultDate();
   }
 
   render() {

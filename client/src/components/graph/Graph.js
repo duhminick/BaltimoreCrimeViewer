@@ -36,7 +36,10 @@ class Graph extends Component {
           }
         })
 
-        console.log(c);
+        if (this.props.limit) {
+          c.length = this.props.limit;
+        }
+
         this.setState({ count: c })
       });
   }
@@ -62,8 +65,8 @@ class Graph extends Component {
         <XYPlot {...xyPlotProps}>
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis title={this.props.xAxisTitle ? this.props.xAxisTyle : ''} />
-          <YAxis title={this.props.yAxisTitle ? this.props.yAxisTitle : ''} />
+          <XAxis title={this.props.xAxisTitle ? this.props.xAxisTyle : ''} tickLabelAngle={this.props.horizontal ? 0 : -45} />
+          <YAxis title={this.props.yAxisTitle ? this.props.yAxisTitle : ''} tickLabelAngle={this.props.horizontal ? -45 : 0} />
           <BarSeries data={count} barWidth={0.4} />
         </XYPlot>
       </div>

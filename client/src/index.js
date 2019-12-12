@@ -20,10 +20,10 @@ const graphHeight = 400;
 let Home = () => (
   <div className="graphs">
     <Graph title="Weapon" attribute="weapon" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
-    <Graph title="Neighborhood" attribute="neighborhood" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="Neighborhood (Top 20)" attribute="neighborhood" yAxisTitle="Count" width={graphWidth} height={graphHeight} limit={20} />
     <Graph title="District" attribute="district" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
     <Graph title="Inside (vs. Outside)" attribute="inside" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
-    <Graph title="Premise" attribute="premise" yAxisTitle="Count" width={graphWidth} height={graphHeight} />
+    <Graph title="Premise (Top 20)" attribute="premise" yAxisTitle="Count" width={graphWidth} height={graphHeight} limit={20} />
   </div>
 );
 

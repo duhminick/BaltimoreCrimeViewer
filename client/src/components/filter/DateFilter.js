@@ -13,6 +13,10 @@ class DateFilter extends Component {
     };
   }
 
+  format(date) {
+    return moment(date).format('YYYY-MM-DD');
+  }
+
   render() {
     const { title } = this.props;
 
@@ -23,16 +27,13 @@ class DateFilter extends Component {
         }
 
         <DateRangeInput
-          formatDate={date => moment(date).format('YYYY-MM-DD')}
+          formatDate={date => this.format(date)}
           parseDate={date => new Date(date)}
           onChange={range => {
             const start = range[0];
             const end = range[1];
-            let format = (date) => {
-              return moment(date).format('YYYY-MM-DD');
-            };
             if (start && end) {
-              this.setState({from: format(start), to: format(end)});
+              this.setState({from: this.format(start), to: this.format(end)});
             }
           }}
         />

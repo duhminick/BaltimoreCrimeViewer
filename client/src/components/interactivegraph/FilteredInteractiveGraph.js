@@ -16,7 +16,6 @@ class FilteredInteractiveGraph extends Component {
   }
 
   _update(type) {
-    console.log('set state');
     this.setState({attribute: type});
   }
 
@@ -28,6 +27,7 @@ class FilteredInteractiveGraph extends Component {
           <div className="graph-types">
             <Button className="graph-button" text="Weapon" onClick={() => this._update('weapon')} />
             <Button className="graph-button" text="Neighborhood" onClick={() => this._update('neighborhood')} />
+            <Button className="graph-button" text="Description" onClick={() => this._update('description')} />
             <Button className="graph-button" text="District" onClick={() => this._update('district')} />
             <Button className="graph-button" text="Premise" onClick={() => this._update('premise')} />
           </div>

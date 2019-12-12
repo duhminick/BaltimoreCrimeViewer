@@ -13,7 +13,7 @@ api = Api(app)
 db = database.get_instance()
 
 def valid_attribute(attribute):
-  if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside']:
+  if attribute not in ['weapon', 'neighborhood', 'district', 'premise', 'inside', 'description']:
     abort(400, error='Invalid attribute')
 
 def get_unique_column_values(column_name):
