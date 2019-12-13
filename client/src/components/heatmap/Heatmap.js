@@ -82,6 +82,7 @@ class Heatmap extends Component {
           minZoom={11}
           maxZoom={18}
           onClick={this._onClick}
+          reuseMap={true}
           mapboxApiAccessToken={MAP_TOKEN}>
             {coordinates && (
               <Source type="geojson" data={coordinates}>
