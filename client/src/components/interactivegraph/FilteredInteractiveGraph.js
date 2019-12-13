@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { Filter } from '../filter';
 import { InteractiveGraph } from './';
 import { Heatmap } from '../heatmap';
+import { Table } from '../table';
 import { Button } from '@blueprintjs/core';
 import './interactivegraph.css'
+
+const GRAPH = 1;
+const HEATMAP = 2;
+const TABLE = 3;
 
 class FilteredInteractiveGraph extends Component {
   constructor(props) {
@@ -11,7 +16,7 @@ class FilteredInteractiveGraph extends Component {
 
     this.state = {
       attribute: 'weapon',
-      showMap: false,
+      view: GRAPH
     };
 
     this._update.bind(this);
@@ -20,14 +25,20 @@ class FilteredInteractiveGraph extends Component {
   _update(type) {
     this.setState({
       attribute: type,
-      showMap: false
+      view: GRAPH
     });
+    this.forceUpdate();
   }
 
   render() {
-    const { showMap } = this.state;
+    const { view, attribute } = this.state;
 
-    const DataView = showMap ? Heatmap : InteractiveGraph;
+    let DataView = InteractiveGraph;
+    if (view == HEATMAP) {
+      DataView = Heatmap;
+    } else if (view == TABLE) {
+      DataView = Table;
+    }
 
     return (
       <div className="filtered-interactive-graph">
@@ -39,12 +50,14 @@ class FilteredInteractiveGraph extends Component {
             <Button className="graph-button" text="Description" onClick={() => this._update('description')} />
             <Button className="graph-button" text="District" onClick={() => this._update('district')} />
             <Button className="graph-button" text="Premise" onClick={() => this._update('premise')} />
-            <Button className="graph-button" text="Heatmap" onClick={() => this.setState({showMap: true})} />
+            <Button className="graph-button" text="Heatmap" onClick={() => this.setState({view: HEATMAP})} />
+            <Button className="graph-button" text="Table" onClick={() => this.setState({view: TABLE})} />
           </div>
 
         </div>
+
         <Filter>
-          <DataView attribute={this.state.attribute} />
+          <DataView attribute={attribute} />
         </Filter>
       </div>
     );
