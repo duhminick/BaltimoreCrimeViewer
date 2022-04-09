@@ -7,7 +7,7 @@
     "@blueprintjs/datetime": "^3.13.0",
     "@blueprintjs/select": "^3.10.0",
     "@reach/router": "^1.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "react": "^16.9.0",
     "react-data-grid": "^6.1.0",
     "react-dom": "^16.9.0",
